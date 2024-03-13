@@ -9,3 +9,32 @@
 
 [dependencies]
     clap = { version = "4.5", features = ["derive"] }
+    result_dyn = { version = "0.4", path = "../result_dyn" }
+
+
+[lints.rust]
+    unsafe_code = "deny"
+
+
+[lints.clippy]
+    ### category ###
+    pedantic = "warn"
+    nursery = "warn"
+
+
+    needless_return = "allow"
+    # implicit_return = "warn"
+
+
+    ## restriction
+    shadow_same = "allow"
+    shadow_reuse = "allow"
+    shadow_unrelated = "warn"
+
+    # unwrap_used = "warn"
+
+
+    ## pedantic
+    cast_possible_wrap = "warn"
+    enum_glob_use = "deny"
+    semicolon_if_nothing_returned = "deny"

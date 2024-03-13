@@ -1,0 +1,19 @@
+match_block_trailing_comma = true
+newline_style = "Unix"
+reorder_imports = true
+reorder_modules = true
+use_field_init_shorthand = true
+use_try_shorthand = true
+
+
+unstable_features = true
+version = "Two"
+
+
+imports_granularity = "Crate"
+group_imports = "StdExternalCrate"
+
+format_macro_bodies = true
+format_macro_matchers = true
+hex_literal_case = "Upper"
+overflow_delimited_expr = true
