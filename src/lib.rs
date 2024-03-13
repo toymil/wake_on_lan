@@ -20,8 +20,8 @@ pub struct Cli {
 impl Cli {
     #[allow(clippy::missing_errors_doc)]
     pub fn run(self) -> ResultDyn<()> {
-        let socket = UdpSocket::bind(SocketAddrV4::new(Ipv4Addr::LOCALHOST, 0))?;
-        socket.connect(SocketAddrV4::new(Ipv4Addr::BROADCAST, 9))?;
+        let socket = UdpSocket::bind(SocketAddrV4::new(Ipv4Addr::UNSPECIFIED, 0))?;
+        socket.connect(SocketAddrV4::new(Ipv4Addr::BROADCAST, 0))?;
 
         for mac_addr in self.mac_addr_list {
             socket.send(&construct_magic_packet(mac_addr))?;
