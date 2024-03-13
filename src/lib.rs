@@ -31,8 +31,9 @@ impl Cli {
     }
 }
 
-#[allow(clippy::needless_pass_by_value)]
-fn construct_magic_packet(mac_addr: MacAddr) -> [u8; 6 + 6 * 16] {
+#[allow(clippy::needless_pass_by_value, clippy::missing_panics_doc)]
+#[must_use]
+pub fn construct_magic_packet(mac_addr: MacAddr) -> [u8; 6 + 6 * 16] {
     let mut packet: Vec<u8> = Vec::new();
     packet.extend([u8::MAX; 6]);
     packet.extend([mac_addr.0; 16].concat());
@@ -42,10 +43,11 @@ fn construct_magic_packet(mac_addr: MacAddr) -> [u8; 6 + 6 * 16] {
 }
 
 #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Clone, Hash)]
-struct MacAddr([u8; 6]);
+pub struct MacAddr([u8; 6]);
 
 impl FromStr for MacAddr {
     type Err = DynSyncError;
+
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let bytes = s
             .split(':')
