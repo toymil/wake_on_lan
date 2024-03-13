@@ -3,5 +3,5 @@ use wake_on_lan::Cli;
 
 fn main() {
     let cli = Cli::parse();
-    cli.run();
+    cli.run().unwrap();
 }
