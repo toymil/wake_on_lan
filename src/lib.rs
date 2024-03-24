@@ -15,6 +15,12 @@ pub struct Cli {
         value_parser = <MacAddr as FromStr>::from_str,
     )]
     mac_addr_list: Vec<MacAddr>,
+
+    #[arg(long, default_value_t = Ipv4Addr::BROADCAST)]
+    ip: Ipv4Addr,
+
+    #[arg(long, default_value_t = 0)]
+    port: u16,
 }
 
 impl Cli {
@@ -22,7 +28,7 @@ impl Cli {
     pub fn run(self) -> ResultDyn<()> {
         let socket = UdpSocket::bind(SocketAddrV4::new(Ipv4Addr::UNSPECIFIED, 0))?;
         socket.set_broadcast(true)?;
-        socket.connect(SocketAddrV4::new(Ipv4Addr::BROADCAST, 0))?;
+        socket.connect(SocketAddrV4::new(self.ip, self.port))?;
 
         for mac_addr in self.mac_addr_list {
             socket.send(&construct_magic_packet(mac_addr))?;
