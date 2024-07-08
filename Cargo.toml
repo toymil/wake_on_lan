@@ -12,29 +12,71 @@
     result_dyn = { version = "0.4", path = "../result_dyn" }
 
 
-[lints.rust]
+[lints.rust] # forbid > deny > warn > allow
     unsafe_code = "deny"
 
 
-[lints.clippy]
-    ### category ###
-    pedantic = "warn"
-    nursery = "warn"
+[lints.clippy] # forbid > deny > warn > allow
+    ### category: correctness   (default: deny) ###
 
 
+    ### category: suspicious    (default: warn) ###
+
+
+    ### category: style         (default: warn) ###
+    # see also: `implicit_return`
     needless_return = "allow"
-    # implicit_return = "warn"
 
 
-    ## restriction
+    ### category: complexity    (default: warn) ###
+
+
+    ### category: perf          (default: warn) ###
+
+
+    ### category: pedantic      (default: allow) ###
+    pedantic = { level = "warn", priority = -1 }
+
+    enum_glob_use = "deny"
+    cast_possible_wrap = "warn"
+    semicolon_if_nothing_returned = "warn"
+    wildcard_imports = "warn"
+
+    explicit_iter_loop = "allow"
+    module_name_repetitions = "allow"
+
+    too_many_lines = "allow"
+    inline_always = "allow"
+    must_use_candidate = "allow"
+    missing_errors_doc = "allow"
+    missing_panics_doc = "allow"
+    trivially_copy_pass_by_ref = "allow"
+
+
+    ### category: restriction   (default: allow) ###
+    # see also: `needless_return`
+    implicit_return = "allow"
+
+    unwrap_used = "warn"
+
     shadow_same = "allow"
     shadow_reuse = "allow"
     shadow_unrelated = "warn"
 
-    # unwrap_used = "warn"
+    semicolon_inside_block = "allow"
+    semicolon_outside_block = "warn"
 
 
-    ## pedantic
-    cast_possible_wrap = "warn"
-    enum_glob_use = "deny"
-    semicolon_if_nothing_returned = "deny"
+    ### category: nursery       (default: allow) ###
+    nursery = { level = "warn", priority = -1 }
+
+    missing_const_for_fn = "warn"
+
+    redundant_pub_crate = "allow"
+
+
+    ### category: cargo         (default: allow) ###
+    wildcard_dependencies = "deny"
+
+    negative_feature_names = "warn"
+    redundant_feature_names = "warn"
