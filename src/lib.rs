@@ -33,26 +33,33 @@ impl Cli {
         socket.set_broadcast(true)?;
 
         socket.connect((self.ip, self.port))?;
-        for mac_addr in self.mac_addr_list {
-            socket.send(&construct_magic_packet(mac_addr))?;
+        for magic_packet in self
+            .mac_addr_list
+            .into_iter()
+            .map(MacAddr::into_magic_packet)
+        {
+            socket.send(&magic_packet)?;
         }
 
         return Ok(());
     }
 }
 
-#[allow(clippy::needless_pass_by_value)]
-pub fn construct_magic_packet(mac_addr: MacAddr) -> [u8; 6 + 6 * 16] {
-    let mut packet: Vec<u8> = Vec::new();
-    packet.extend([u8::MAX; 6]);
-    packet.extend([mac_addr.0; 16].concat());
-    return packet
-        .try_into()
-        .expect("this should be exactly the right length");
-}
-
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct MacAddr([u8; 6]);
+
+impl MacAddr {
+    pub fn into_magic_packet(self) -> [u8; 6 + 6 * 16] {
+        let mut packet: Vec<u8> = Vec::new();
+
+        packet.extend([u8::MAX; 6]);
+        packet.extend([self.0; 16].concat());
+
+        return packet
+            .try_into()
+            .expect("this should be exactly the right length");
+    }
+}
 
 impl FromStr for MacAddr {
     type Err = DynSyncError;
