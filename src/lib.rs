@@ -8,7 +8,7 @@ use result_dyn::{msg_boxed, DynSyncError, ResultDyn};
 
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Parser)]
 #[command(version)]
-pub struct Cli {
+pub struct Config {
     #[arg(long, default_value_t = IpAddr::V4(Ipv4Addr::UNSPECIFIED))]
     bind_ip: IpAddr,
     #[arg(long, default_value_t = 0)]
@@ -27,8 +27,8 @@ pub struct Cli {
     mac_addr_list: Vec<MacAddr>,
 }
 
-impl Cli {
-    pub fn run(self) -> ResultDyn<()> {
+impl Config {
+    pub fn wake(self) -> ResultDyn<()> {
         let socket = UdpSocket::bind((self.bind_ip, self.bind_port))?;
         socket.set_broadcast(true)?;
 

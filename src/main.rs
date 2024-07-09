@@ -1,8 +1,8 @@
 use clap::Parser;
-use wake_on_lan::Cli;
+use wake_on_lan::Config;
 
 fn main() {
-    let cli = Cli::parse();
+    let config = Config::parse();
     #[allow(clippy::unwrap_used)]
-    cli.run().unwrap();
+    config.wake().unwrap();
 }
