@@ -6,7 +6,7 @@ use std::{
 use clap::Parser;
 use result_dyn::{msg_boxed, DynSyncError, ResultDyn};
 
-#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Clone, Hash, Parser)]
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Parser)]
 #[command(version)]
 pub struct Cli {
     #[arg(
@@ -47,7 +47,7 @@ pub fn construct_magic_packet(mac_addr: MacAddr) -> [u8; 6 + 6 * 16] {
         .expect("this should be exactly the right length");
 }
 
-#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Clone, Hash)]
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct MacAddr([u8; 6]);
 
 impl FromStr for MacAddr {
