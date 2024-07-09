@@ -24,7 +24,6 @@ pub struct Cli {
 }
 
 impl Cli {
-    #[allow(clippy::missing_errors_doc)]
     pub fn run(self) -> ResultDyn<()> {
         let socket = UdpSocket::bind(SocketAddrV4::new(Ipv4Addr::UNSPECIFIED, 0))?;
         socket.set_broadcast(true)?;
@@ -38,8 +37,7 @@ impl Cli {
     }
 }
 
-#[allow(clippy::needless_pass_by_value, clippy::missing_panics_doc)]
-#[must_use]
+#[allow(clippy::needless_pass_by_value)]
 pub fn construct_magic_packet(mac_addr: MacAddr) -> [u8; 6 + 6 * 16] {
     let mut packet: Vec<u8> = Vec::new();
     packet.extend([u8::MAX; 6]);
