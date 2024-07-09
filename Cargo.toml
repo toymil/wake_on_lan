@@ -63,8 +63,8 @@
     shadow_reuse = "allow"
     shadow_unrelated = "warn"
 
-    semicolon_inside_block = "allow"
-    semicolon_outside_block = "warn"
+    semicolon_inside_block = "warn"
+    semicolon_outside_block = "allow"
 
 
     ### category: nursery       (default: allow) ###
