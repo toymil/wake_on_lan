@@ -1,5 +1,5 @@
 use std::{
-    net::{Ipv4Addr, SocketAddrV4, UdpSocket},
+    net::{IpAddr, Ipv4Addr, UdpSocket},
     str::FromStr,
 };
 
@@ -9,26 +9,30 @@ use result_dyn::{msg_boxed, DynSyncError, ResultDyn};
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Parser)]
 #[command(version)]
 pub struct Cli {
+    #[arg(long, default_value_t = IpAddr::V4(Ipv4Addr::UNSPECIFIED))]
+    bind_ip: IpAddr,
+    #[arg(long, default_value_t = 0)]
+    bind_port: u16,
+
+    #[arg(long, default_value_t = IpAddr::V4(Ipv4Addr::BROADCAST))]
+    ip: IpAddr,
+    #[arg(long, default_value_t = 0)]
+    port: u16,
+
     #[arg(
         required = true,
         value_name = "MAC_ADDR",
         value_parser = <MacAddr as FromStr>::from_str,
     )]
     mac_addr_list: Vec<MacAddr>,
-
-    #[arg(long, default_value_t = Ipv4Addr::BROADCAST)]
-    ip: Ipv4Addr,
-
-    #[arg(long, default_value_t = 0)]
-    port: u16,
 }
 
 impl Cli {
     pub fn run(self) -> ResultDyn<()> {
-        let socket = UdpSocket::bind(SocketAddrV4::new(Ipv4Addr::UNSPECIFIED, 0))?;
+        let socket = UdpSocket::bind((self.bind_ip, self.bind_port))?;
         socket.set_broadcast(true)?;
-        socket.connect(SocketAddrV4::new(self.ip, self.port))?;
 
+        socket.connect((self.ip, self.port))?;
         for mac_addr in self.mac_addr_list {
             socket.send(&construct_magic_packet(mac_addr))?;
         }
