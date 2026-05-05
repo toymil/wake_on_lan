@@ -4,7 +4,7 @@ use std::{
 };
 
 use clap::Parser;
-use result_dyn::{msg_boxed, DynSyncError, ResultDyn};
+use result_dyn::{ErrMsg, ResultMsg, ewrap, msg, rwrap};
 
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Parser)]
 #[command(version)]
@@ -28,17 +28,17 @@ pub struct Config {
 }
 
 impl Config {
-    pub fn wake(self) -> ResultDyn<()> {
-        let socket = UdpSocket::bind((self.bind_ip, self.bind_port))?;
-        socket.set_broadcast(true)?;
+    pub fn wake(self) -> ResultMsg<()> {
+        let socket = rwrap!(UdpSocket::bind((self.bind_ip, self.bind_port)))?;
+        rwrap!(socket.set_broadcast(true))?;
 
-        socket.connect((self.ip, self.port))?;
+        rwrap!(socket.connect((self.ip, self.port)))?;
         for magic_packet in self
             .mac_addr_list
             .into_iter()
             .map(MacAddr::into_magic_packet)
         {
-            socket.send(&magic_packet)?;
+            rwrap!(socket.send(&magic_packet))?;
         }
 
         return Ok(());
@@ -62,15 +62,16 @@ impl MacAddr {
 }
 
 impl FromStr for MacAddr {
-    type Err = DynSyncError;
+    type Err = ErrMsg;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let bytes = s
             .split(':')
             .map(|sub| u8::from_str_radix(sub, 16))
-            .collect::<Result<Vec<_>, _>>()?;
+            .collect::<Result<Vec<_>, _>>()
+            .map_err(|e| ewrap!(e))?;
         let arr = <[_; 6]>::try_from(bytes).map_err(|vec| {
-            msg_boxed!(
+            msg!(
                 "wrong byte length for mac address, expected 6, got {}",
                 vec.len()
             )
