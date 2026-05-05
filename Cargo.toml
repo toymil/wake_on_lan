@@ -9,10 +9,7 @@
 
 [dependencies]
     clap = { version = "4.5", features = ["derive"] }
-    result_dyn = {
-        git = "https://codeberg.org/toymil/result_dyn.git",
-        rev = "a189d4e95fa78dae20bbf2751b6458c50082071e"
-    }
+    result_dyn = { git = "https://codeberg.org/toymil/result_dyn.git", rev = "61a344e" }
 
 [lints.rust]  # forbid > deny > warn > allow
     unsafe_code = "deny"
