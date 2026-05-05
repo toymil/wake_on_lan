@@ -9,30 +9,26 @@
 
 [dependencies]
     clap = { version = "4.5", features = ["derive"] }
-    result_dyn = { version = "0.4", path = "../result_dyn" }
+    result_dyn = {
+        git = "https://codeberg.org/toymil/result_dyn.git",
+        rev = "a189d4e95fa78dae20bbf2751b6458c50082071e"
+    }
 
-
-[lints.rust] # forbid > deny > warn > allow
+[lints.rust]  # forbid > deny > warn > allow
     unsafe_code = "deny"
 
-
-[lints.clippy] # forbid > deny > warn > allow
+[lints.clippy]  # forbid > deny > warn > allow
     ### category: correctness   (default: deny) ###
 
-
     ### category: suspicious    (default: warn) ###
-
 
     ### category: style         (default: warn) ###
     # see also: `implicit_return`
     needless_return = "allow"
 
-
     ### category: complexity    (default: warn) ###
 
-
     ### category: perf          (default: warn) ###
-
 
     ### category: pedantic      (default: allow) ###
     pedantic = { level = "warn", priority = -1 }
@@ -52,7 +48,6 @@
     missing_panics_doc = "allow"
     trivially_copy_pass_by_ref = "allow"
 
-
     ### category: restriction   (default: allow) ###
     # see also: `needless_return`
     implicit_return = "allow"
@@ -66,14 +61,12 @@
     semicolon_inside_block = "warn"
     semicolon_outside_block = "allow"
 
-
     ### category: nursery       (default: allow) ###
     nursery = { level = "warn", priority = -1 }
 
     missing_const_for_fn = "warn"
 
     redundant_pub_crate = "allow"
-
 
     ### category: cargo         (default: allow) ###
     wildcard_dependencies = "deny"
